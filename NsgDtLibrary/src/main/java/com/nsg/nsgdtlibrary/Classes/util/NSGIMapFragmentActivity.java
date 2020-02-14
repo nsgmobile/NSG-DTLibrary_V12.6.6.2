@@ -377,6 +377,8 @@ import static java.lang.Math.sin;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            checkPermission();
+            requestPermission();
             mMarkerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.gps_transperent_98);
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
             //  tv = (TextView) rootView.findViewById(R.id.tv);
@@ -391,8 +393,7 @@ import static java.lang.Math.sin;
             // mSensorManager = (SensorManager)getContext().getSystemService(SENSOR_SERVICE);
             // mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             // mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-            checkPermission();
-            requestPermission();
+
             String delQuery = "DELETE  FROM " + RouteT.TABLE_NAME;
             sqlHandler.executeQuery(delQuery);
             //change_map_options = (ImageButton)rootView.findViewById(R.id.change_map_options);
@@ -423,6 +424,7 @@ import static java.lang.Math.sin;
                 @Override
                 public void onMapReady(GoogleMap googlemap) {
                     if (BASE_MAP_URL_FORMAT != null) {
+
                         NSGIMapFragmentActivity.this.mMap = googlemap;
                         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
                        // NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
@@ -1931,7 +1933,7 @@ import static java.lang.Math.sin;
                         boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
                         if (locationAccepted && storageAccepted) {
-                            // Toast.makeText(this, "Permission Granted,.", Toast.LENGTH_LONG).show();
+                             Toast.makeText(getContext(), "Permission Granted,.", Toast.LENGTH_LONG).show();
                         } else {
                             // Toast.makeText(this, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
 
