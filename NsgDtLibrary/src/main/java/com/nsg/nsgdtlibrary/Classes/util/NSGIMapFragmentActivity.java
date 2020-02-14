@@ -425,8 +425,8 @@ import static java.lang.Math.sin;
                     if (BASE_MAP_URL_FORMAT != null) {
                         NSGIMapFragmentActivity.this.mMap = googlemap;
 
-                      //  mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-                        NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
+                        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                      //  NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
                         TileProvider tileProvider = new ExpandedMBTilesTileProvider(new File(BASE_MAP_URL_FORMAT.toString()), 256, 256);
                         TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
                         tileOverlay.setTransparency(0.5f - tileOverlay.getTransparency());
