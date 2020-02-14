@@ -146,6 +146,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
  public class NSGIMapFragmentActivity extends Fragment implements View.OnClickListener {
+     private boolean isAlertShown=false;
         private static final int PERMISSION_REQUEST_CODE = 200;
         boolean locationAccepted,islocationControlEnabled=false;
         // private static final int SENSOR_DELAY_NORMAL =50;
@@ -1429,22 +1430,27 @@ import static java.lang.Math.sin;
                 }
 
                 if (getActivity() != null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.yourDialog);
-                    builder.setTitle("Alert");
-                    builder.setIcon(R.drawable.car_icon_32);
-                    builder.setMessage("Destination Reached")
-                            .setCancelable(false)
-                            .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    StringBuilder destinationAlert=new StringBuilder("Destination Reached");
-                                    sendData(MapEvents.ALERTVALUE_4,MapEvents.ALERTTYPE_4);
-                                    Log.e("Alert Destination"," Alert Destination @@@@@@@@@@@@@@@@@@@@ "+ DestinationNode);
+                    if(isAlertShown==false) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.yourDialog);
+                        builder.setTitle("Alert");
+                        builder.setIcon(R.drawable.car_icon_32);
+                        builder.setMessage("Destination Reached")
+                                .setCancelable(false)
+                                .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        StringBuilder destinationAlert = new StringBuilder("Destination Reached");
+                                        sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
+                                        Log.e("Alert Destination", " Alert Destination @@@@@@@@@@@@@@@@@@@@ " + DestinationNode);
 
-                                    getActivity().onBackPressed();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                                        getActivity().onBackPressed();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        isAlertShown=true;
+                    }else{
+
+                    }
                 }
             }
         }
