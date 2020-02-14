@@ -28,8 +28,14 @@ public class NSGApiActivity extends FragmentActivity implements NSGIMapFragmentA
     private String charlsisNumber;
     private  Button Start,Stop;
     private String jobId="1",routeId;
+    private String SourcePosition = "55.303934 25.259310";
+    private String DestinationPosition = "55.303703 25.257474";
+    String routeData="{\"$id\": \"1\",\"Message\": \"Sucess\",\"Status\": \"Success\",\"TotalDistance\": 0.04324998409,\"Route\": [{\"$id\": \"114\",\"EdgeNo\": \"1817\",\"GeometryText\": \"-\",\"Geometry\": {\n" +
+            "        \"$id\": \"115\",\"type\": \"LineString\",\"coordinates\": [[55.303824,25.259174],[55.303507,25.258667],[55.303330,25.258393],[55.303132,25.258046],[55.303006,25.257828],[55.303360,25.257644]]}}]}";
 
 
+
+/*
      private String SourcePosition = "55.067291 24.978782";
      private String DestinationPosition = "55.067205 24.979878";
     // 25.26886,55.33279   25.27078,55.3327
@@ -61,7 +67,7 @@ public class NSGApiActivity extends FragmentActivity implements NSGIMapFragmentA
             "[55.066794299000037,24.98024651500009],[55.066816470000049,24.980249936000064],[55.066838951000079,24.980250405000049],\n" +
             "[55.066861270000061,24.980247913000085]]}},{\"$id\":\"6\",\"EdgeNo\":\"443\",\"GeometryText\":\"-\",\"Geometry\":\n" +
             "{\"$id\":\"7\",\"type\":\"LineString\",\"coordinates\":[[55.066861270000061,24.980247913000085],[55.0672260238388,24.9799000715094]]}}]}";
-
+*/
 
 /*
      private String SourcePosition = "55.33279 25.26886";

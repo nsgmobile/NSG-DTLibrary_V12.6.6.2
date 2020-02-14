@@ -530,7 +530,7 @@ import static java.lang.Math.sin;
                                     }
                                 }
 
-                            }, 0, 10000);
+                            }, 0, 5000);
                         }
                         mMap.setMyLocationEnabled(true);
                         mMap.setBuildingsEnabled(true);
@@ -550,7 +550,7 @@ import static java.lang.Math.sin;
                             isTimerStarted = true;
 
                             Handler handler = new Handler();
-                            int delay = 1000 * 5; //milliseconds
+                            int delay = 1000 *1; //milliseconds
                             handler.postDelayed(new Runnable() {
                                 public void run() {
                                     //START LOCATIONS HERE
@@ -1428,25 +1428,24 @@ import static java.lang.Math.sin;
                     Log.e("TTS", "Error in converting Text to Speech!");
                 }
 
+                if (getActivity() != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.yourDialog);
+                    builder.setTitle("Alert");
+                    builder.setIcon(R.drawable.car_icon_32);
+                    builder.setMessage("Destination Reached")
+                            .setCancelable(false)
+                            .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    StringBuilder destinationAlert=new StringBuilder("Destination Reached");
+                                    sendData(MapEvents.ALERTVALUE_4,MapEvents.ALERTTYPE_4);
+                                    Log.e("Alert Destination"," Alert Destination @@@@@@@@@@@@@@@@@@@@ "+ DestinationNode);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.yourDialog);
-                builder.setTitle("Alert");
-                builder.setIcon(R.drawable.car_icon_32);
-                builder.setMessage("Destination Reached")
-                        .setCancelable(false)
-                        .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                StringBuilder destinationAlert=new StringBuilder("Destination Reached");
-                                sendData(MapEvents.ALERTVALUE_4,MapEvents.ALERTTYPE_4);
-                                Log.e("Alert Destination"," Alert Destination @@@@@@@@@@@@@@@@@@@@ "+ DestinationNode);
-
-                                getActivity().onBackPressed();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-
-
+                                    getActivity().onBackPressed();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         }
 
