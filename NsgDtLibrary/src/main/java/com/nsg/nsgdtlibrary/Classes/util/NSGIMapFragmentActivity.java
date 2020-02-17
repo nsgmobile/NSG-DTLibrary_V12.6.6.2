@@ -553,19 +553,12 @@ import static java.lang.Math.sin;
                         mMap.getUiSettings().setRotateGesturesEnabled(true);
                         mMap.getUiSettings().setMyLocationButtonEnabled(true);
                         isNavigationStarted = true;
-
-
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             isTimerStarted = true;
-
                             final Handler handler = new Handler();
                             final int delay = 1000 *1; //milliseconds
                             handler.postDelayed(new Runnable() {
                                 public void run() {
-                                    //START LOCATIONS HERE
-
-                                    //END LOCATION OBJECT
-
                                     if (currentGpsPosition != null) {
                                         OldGPSPosition = currentGpsPosition;
                                         Log.v("APP DATA ", "START NAV OLD GPS POSITION ----" + OldGPSPosition);
