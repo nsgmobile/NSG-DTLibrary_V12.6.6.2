@@ -1104,7 +1104,7 @@ import static java.lang.Math.sin;
              Log.e("Route Deviated", "Current GPS position ------- " + currentGpsPosition);
              List<LatLng> EdgeWithoutDuplicatesInRouteDeviationPoints = removeDuplicatesRouteDeviated(RouteDeviationConvertedPoints);
              for (int k = 0; k < EdgeWithoutDuplicatesInRouteDeviationPoints.size(); k++) {
-                 Log.e("Route Deviated----", "EdgeWithoutDuplicatesInRouteDeviationPoints ------- " + EdgeWithoutDuplicatesInRouteDeviationPoints.get(k));
+                 //Log.e("Route Deviated----", "EdgeWithoutDuplicatesInRouteDeviationPoints ------- " + EdgeWithoutDuplicatesInRouteDeviationPoints.get(k));
              }
              if (EdgeWithoutDuplicatesInRouteDeviationPoints != null && EdgeWithoutDuplicatesInRouteDeviationPoints.size() > 0) {
 
@@ -1112,7 +1112,7 @@ import static java.lang.Math.sin;
                  HashMap<String, LatLng> distancesMapInRouteDeviation = new HashMap<String, LatLng>();
                  for (int epList = 0; epList < EdgeWithoutDuplicatesInRouteDeviationPoints.size(); epList++) {
                      LatLng PositionMarkingPoint = EdgeWithoutDuplicatesInRouteDeviationPoints.get(epList);
-                     Log.e("Route Deviation", " Route Deviation PositionMarking Point" + PositionMarkingPoint);
+                   //  Log.e("Route Deviation", " Route Deviation PositionMarking Point" + PositionMarkingPoint);
                      double distance = distFrom(PositionMarkingPoint.longitude, PositionMarkingPoint.latitude, currentGpsPosition.longitude, currentGpsPosition.latitude);
                      distancesMapInRouteDeviation.put(String.valueOf(distance), PositionMarkingPoint);
                      distancesInDeviation.add(distance);
