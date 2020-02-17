@@ -554,8 +554,8 @@ import static java.lang.Math.sin;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             isTimerStarted = true;
 
-                            Handler handler = new Handler();
-                            int delay = 1000 *1; //milliseconds
+                            final Handler handler = new Handler();
+                            final int delay = 1000 *1; //milliseconds
                             handler.postDelayed(new Runnable() {
                                 public void run() {
                                     //START LOCATIONS HERE
@@ -639,9 +639,10 @@ import static java.lang.Math.sin;
                                                     }
                                                 }
                                             }
-                                        } else {
-                                            MoveWithGpsPointInRouteDeviatedPoints(currentGpsPosition);
-                                        }
+
+                                         }
+                                    } else {
+                                        MoveWithGpsPointInRouteDeviatedPoints(currentGpsPosition);
                                     }
                                     //Navigation code ends here
                                     handler.postDelayed(this, delay);
@@ -1020,7 +1021,7 @@ import static java.lang.Math.sin;
                                 GetRouteDetails(routeDiationPosition, destPoint);
                                 //checkPointsOfRoue1withNewRoute(EdgeWithoutDuplicates,PointBeforeRouteDeviation);
                                 if (RouteDeviationConvertedPoints != null && RouteDeviationConvertedPoints.size() > 0) {
-                                    isRouteDeviated = true;
+
 
                                     LayoutInflater inflater1 = getActivity().getLayoutInflater();
                                     @SuppressLint("WrongViewCast") View layout = inflater1.inflate(R.layout.custom_toast, (ViewGroup) getActivity().findViewById(R.id.textView_toast));
@@ -1063,6 +1064,7 @@ import static java.lang.Math.sin;
                                         mMap.addPolyline(polylineOptions);
                                         polyline.setJointType(JointType.ROUND);
                                     }
+                                    isRouteDeviated = true;
                                 }
 
 
