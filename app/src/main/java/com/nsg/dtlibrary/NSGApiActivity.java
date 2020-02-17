@@ -1,5 +1,7 @@
 package com.nsg.dtlibrary;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.sax.StartElementListener;
@@ -134,6 +136,19 @@ public class NSGApiActivity extends FragmentActivity implements NSGIMapFragmentA
         }else if(alertType==MapEvents.ALERTTYPE_3){
 
         }else if(alertType==MapEvents.ALERTTYPE_4){
+            AlertDialog.Builder builder = new AlertDialog.Builder(NSGApiActivity.this, R.style.yourDialog);
+            builder.setTitle("Alert");
+            builder.setIcon(R.drawable.car_icon_32);
+            builder.setMessage("Destination Reached")
+                    .setCancelable(false)
+                    .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
 
         }else if(alertType==MapEvents.ALERTTYPE_5){
 

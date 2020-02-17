@@ -426,8 +426,8 @@ import static java.lang.Math.sin;
                     if (BASE_MAP_URL_FORMAT != null) {
 
                         NSGIMapFragmentActivity.this.mMap = googlemap;
-                        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-                       // NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
+                      //  mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                        NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
                         TileProvider tileProvider = new ExpandedMBTilesTileProvider(new File(BASE_MAP_URL_FORMAT.toString()), 256, 256);
                         TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
                         tileOverlay.setTransparency(0.5f - tileOverlay.getTransparency());
@@ -1425,15 +1425,20 @@ import static java.lang.Math.sin;
                 //Speech implementation
                 mMap.setMyLocationEnabled(false);
                 */
-                String data1=" Your Destination Reached ";
 
-                int speechStatus1 = textToSpeech.speak(data1, TextToSpeech.QUEUE_FLUSH, null);
-                if (speechStatus1 == TextToSpeech.ERROR) {
-                    Log.e("TTS", "Error in converting Text to Speech!");
-                }
 
                 if (getActivity() != null) {
                     if(isAlertShown==false) {
+                        String data1=" Your Destination Reached ";
+                        int speechStatus1 = textToSpeech.speak(data1, TextToSpeech.QUEUE_FLUSH, null);
+                        if (speechStatus1 == TextToSpeech.ERROR) {
+                            Log.e("TTS", "Error in converting Text to Speech!");
+                        }
+                        StringBuilder destinationAlert = new StringBuilder("Destination Reached");
+                        sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
+                        Log.e("Alert Destination", " Alert Destination @@@@@@@@@@@@@@@@@@@@ " + DestinationNode);
+
+                        /*
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.yourDialog);
                         builder.setTitle("Alert");
                         builder.setIcon(R.drawable.car_icon_32);
@@ -1441,15 +1446,13 @@ import static java.lang.Math.sin;
                                 .setCancelable(false)
                                 .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        StringBuilder destinationAlert = new StringBuilder("Destination Reached");
-                                        sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
-                                        Log.e("Alert Destination", " Alert Destination @@@@@@@@@@@@@@@@@@@@ " + DestinationNode);
 
                                         getActivity().onBackPressed();
                                     }
                                 });
                         AlertDialog alert = builder.create();
                         alert.show();
+                         */
                         isAlertShown=true;
                     }else{
 
