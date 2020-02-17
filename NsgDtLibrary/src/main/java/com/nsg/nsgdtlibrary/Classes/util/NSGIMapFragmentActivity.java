@@ -445,6 +445,9 @@ import static java.lang.Math.sin;
         @Override
         public void onClick(View v) {
             if(v==change_map_options){
+                /*
+                Changing Map options on button click
+                 */
 
             PopupMenu popup = new PopupMenu(getContext(), change_map_options);
             //Inflating the Popup using xml file
@@ -484,6 +487,10 @@ import static java.lang.Math.sin;
             });
             popup.show();
             }else if(v==re_center){
+                /*
+                Recenter Button if map enabled and location enabled get location from map and update map position and
+                recenter to  the position captured
+                 */
                 mMap.setMyLocationEnabled(true);
                 Location location = mMap.getMyLocation();
                 LatLng myLocation=null;
@@ -512,6 +519,12 @@ import static java.lang.Math.sin;
         }
 
         public int startNavigation() {
+            /*
+                Starts Navigation HERE
+                Get current location from the location service if map enabled true then it will starts navigation
+                from external service and strts navigation if route deviation not observed move in the loaded path
+                if route deviation observed movement from route deviated path only
+             */
             islocationControlEnabled=false;
             Log.v("APP DATA ", "islocationControlEnabled START BUTTON GPS POSITION ----" + OldGPSPosition);
             if (SourceNode != null && DestinationNode != null ) {
@@ -662,6 +675,10 @@ import static java.lang.Math.sin;
             return 0;
         }
         public int stopNavigation(){
+            /*
+              StopNavigation if user enables stop navigation
+              show ALERT TYPE-5  for stoppping map
+             */
             try{
                 islocationControlEnabled = true;
                 if(SourceNode!=null && DestinationNode!=null) {
@@ -1021,7 +1038,7 @@ import static java.lang.Math.sin;
                                 GetRouteDetails(routeDiationPosition, destPoint);
                                 //checkPointsOfRoue1withNewRoute(EdgeWithoutDuplicates,PointBeforeRouteDeviation);
                                 if (RouteDeviationConvertedPoints != null && RouteDeviationConvertedPoints.size() > 0) {
-
+                                    isRouteDeviated = true;
 
                                     LayoutInflater inflater1 = getActivity().getLayoutInflater();
                                     @SuppressLint("WrongViewCast") View layout = inflater1.inflate(R.layout.custom_toast, (ViewGroup) getActivity().findViewById(R.id.textView_toast));
@@ -1064,7 +1081,7 @@ import static java.lang.Math.sin;
                                         mMap.addPolyline(polylineOptions);
                                         polyline.setJointType(JointType.ROUND);
                                     }
-                                    isRouteDeviated = true;
+
                                 }
 
 
