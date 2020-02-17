@@ -1209,7 +1209,6 @@ import static java.lang.Math.sin;
              if (currentGpsPosition.equals(DestinationNode)) {
                  nearestPointValuesList.add(DestinationPosition);
              }
-
               */
              AlertDestination(currentGpsPosition);
          }
