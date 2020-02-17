@@ -1434,7 +1434,7 @@ import static java.lang.Math.sin;
 
         }
         public void AlertDestination(LatLng currentGpsPosition){
-            int GpsIndex=OldNearestGpsList.indexOf(nearestPositionPoint);
+          //  int GpsIndex=OldNearestGpsList.indexOf(nearestPositionPoint);
             drawMarkerWithCircle(DestinationNode,10);
             double distanceAtLast = distFrom(currentGpsPosition.latitude, currentGpsPosition.longitude, mCircle.getCenter().latitude,  mCircle.getCenter().longitude);
             Log.e("LAST DISTANCE"," LAST DISTANCE @@@@@@@@@@@@@@@@@@@@ "+ distanceAtLast);
