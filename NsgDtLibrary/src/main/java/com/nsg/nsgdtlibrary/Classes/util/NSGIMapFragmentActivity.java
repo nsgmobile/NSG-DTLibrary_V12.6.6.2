@@ -626,9 +626,7 @@ import static java.lang.Math.sin;
                                                             double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
                                                             LatLng shadowTgt = SphericalUtil.computeOffset(nPosition, offsetDistance, bearing);
                                                             caclulateETA(TotalDistanceInMTS, SourceNode, currentGpsPosition, DestinationNode);
-                                                            //
                                                             verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, MapEvents.routeDeviationDistance, null);
-                                                          //
                                                             AlertDestination(currentGpsPosition);
                                                             if (bearing > 0.0) {
                                                                 CameraPosition currentPlace = new CameraPosition.Builder()
@@ -1133,7 +1131,7 @@ import static java.lang.Math.sin;
                  if (answerFirst) {
                      System.out.println("The list contains " + firstShortestDistance);
                      FirstCordinate = distancesMapInRouteDeviation.get(firstShortestDistance);
-                     Log.e("Route Deviation", " FIRST Cordinate  From Route deviation" + FirstCordinate);
+                   //  Log.e("Route Deviation", " FIRST Cordinate  From Route deviation" + FirstCordinate);
                      // key= String.valueOf(getKeysFromValue(EdgeWithoutDuplicatesInRouteDeviationPoints,FirstCordinate));
                      // distanceKey= String.valueOf(getKeysFromValue(AllPointEdgeDistaces,FirstCordinate));
                  } else {
@@ -1143,7 +1141,7 @@ import static java.lang.Math.sin;
                  if (answerSecond) {
                      System.out.println("The list contains " + secondShortestDistance);
                      SecondCordinate = distancesMapInRouteDeviation.get(secondShortestDistance);
-                     Log.e("Route Deviation", " SECOND Cordinate  From Route deviation" + SecondCordinate);
+                   //  Log.e("Route Deviation", " SECOND Cordinate  From Route deviation" + SecondCordinate);
                      // key= String.valueOf(getKeysFromValue(EdgeWithoutDuplicatesInRouteDeviationPoints,FirstCordinate));
                      // distanceKey= String.valueOf(getKeysFromValue(AllPointEdgeDistaces,FirstCordinate));
                  } else {
@@ -1154,14 +1152,13 @@ import static java.lang.Math.sin;
               //   Log.e("Route Deviation", " Second Cordinate From Route deviation " + SecondCordinate);
 
                  nearestPositionPoint = findNearestPoint(currentGpsPosition, FirstCordinate, SecondCordinate);
-                 Log.e("Route Deviation", " NEAREST POSITION From Route deviation " + nearestPositionPoint);
+               //  Log.e("Route Deviation", " NEAREST POSITION From Route deviation " + nearestPositionPoint);
                  OldNearestGpsList.add(nearestPositionPoint);
              }
              Log.e("Route Deviation", " OldGps POSITION From Route deviation " + OldGpsRouteDeviation);
              Log.e("Route Deviation", " NEAREST POSITION From Route deviation " + nearestPositionPoint);
              nearestPointValuesList.add(nearestPositionPoint);
 
-             Log.e("Route Deviation", " OldGps POSITION From Route deviation " + OldGpsRouteDeviation);
              if ( OldGpsRouteDeviation  != null && nearestPositionPoint != null) {
                  float bearing = (float) bearingBetweenLocations(OldGpsRouteDeviation, nearestPositionPoint); //correct method to change orientation of map
                  if (mPositionMarker == null) {
@@ -1188,9 +1185,6 @@ import static java.lang.Math.sin;
                      double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
                      LatLng shadowTgt = SphericalUtil.computeOffset(nearestPositionPoint, offsetDistance, bearing);
                      caclulateETA(TotalDistanceInMTS, SourceNode, currentGpsPosition, DestinationNode);
-                     //
-                     verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, MapEvents.routeDeviationDistance, null);
-                     //
                      AlertDestination(currentGpsPosition);
                      if (bearing > 0.0) {
                          CameraPosition currentPlace = new CameraPosition.Builder()
