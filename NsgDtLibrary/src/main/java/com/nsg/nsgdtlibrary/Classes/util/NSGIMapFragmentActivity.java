@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
@@ -198,7 +199,7 @@ import static java.lang.Math.sin;
         private TextView tv,tv1,tv2,tv3,tv4,tv5;
         private String routeIDName;
         HashMap<LatLng,String>edgeDataPointsListData;
-        private ImageButton change_map_options;
+        private ImageButton change_map_options,re_center;
         private String geometryDirectionText="",key="",distanceKey="",geometryDirectionDistance="";
         HashMap<String,String>nearestValuesMap;
         private List<LatLng> OldNearestGpsList;
@@ -253,27 +254,14 @@ import static java.lang.Math.sin;
         }
         @SuppressLint("ValidFragment")
         public NSGIMapFragmentActivity(String BASE_MAP_URL_FORMAT) {
-            //enteredMode = mode;
-            //  routeDeviationDistance=radius;
             NSGIMapFragmentActivity.this.BASE_MAP_URL_FORMAT = BASE_MAP_URL_FORMAT;
-            //NSGTiledLayerOnMap.this.stNode=stNode;
-            // NSGTiledLayerOnMap.this.endNode=endNode;
-            // NSGTiledLayerOnMap.this.enteredMode=mode;
-            // NSGTiledLayerOnMap.this.routeDeviationDistance=radius;
-            // NSGTiledLayerOnMap.this.routeData=routeData;
-            // NSGTiledLayerOnMap.this.routeDeviatedDT_URL=routeDeviatedDT_URL;
-            // NSGTiledLayerOnMap.this.AuthorisationKey=AuthorisationKey;
-
         }
         @SuppressLint("ValidFragment")
         public NSGIMapFragmentActivity(String BASE_MAP_URL_FORMAT,String stNode,String endNode, String routeData,String routeDeviatedDT_URL,String AuthorisationKey) {
-            //enteredMode = mode;
-            //  routeDeviationDistance=radius;
             NSGIMapFragmentActivity.this.BASE_MAP_URL_FORMAT = BASE_MAP_URL_FORMAT;
             NSGIMapFragmentActivity.this.stNode=stNode;
             NSGIMapFragmentActivity.this.endNode=endNode;
-            // NSGTiledLayerOnMap.this.enteredMode=mode;
-            // NSGTiledLayerOnMap.this.routeDeviationDistance=radius;
+            // NSGIMapFragmentActivity.this.routeDeviationDistance=radius;
             NSGIMapFragmentActivity.this.routeData=routeData;
             NSGIMapFragmentActivity.this.routeDeviatedDT_URL=routeDeviatedDT_URL;
             NSGIMapFragmentActivity.this.AuthorisationKey=AuthorisationKey;
@@ -381,23 +369,13 @@ import static java.lang.Math.sin;
             requestPermission();
             mMarkerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.gps_transperent_98);
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-            //  tv = (TextView) rootView.findViewById(R.id.tv);
-            // tv1 = (TextView) rootView.findViewById(R.id.tv1);
-            //  tv2 = (TextView) rootView.findViewById(R.id.tv2);
-            //  tv3 = (TextView) rootView.findViewById(R.id.tv3);
-            //   location_tracking_start=(Button)rootView.findViewById(R.id.location_tracking_start);
-            //   location_tracking_stop=(Button)rootView.findViewById(R.id.location_tracking_stop);
-            //  location_tracking_stop.setVisibility(View.INVISIBLE);
-            // location_tracking=(ImageButton)rootView.findViewById(R.id.location_tracking);
-            // location_tracking.setOnClickListener(this);
-            // mSensorManager = (SensorManager)getContext().getSystemService(SENSOR_SERVICE);
-            // mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            // mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+            re_center=(ImageButton)rootView.findViewById(R.id.re_center);
+            re_center.setOnClickListener(NSGIMapFragmentActivity.this);
 
             String delQuery = "DELETE  FROM " + RouteT.TABLE_NAME;
             sqlHandler.executeQuery(delQuery);
-            //change_map_options = (ImageButton)rootView.findViewById(R.id.change_map_options);
-            //change_map_options.setOnClickListener(NSGTiledLayerOnMap.this);
+            change_map_options = (ImageButton)rootView.findViewById(R.id.change_map_options);
+            change_map_options.setOnClickListener(NSGIMapFragmentActivity.this);
 
             if(stNode!=null && endNode!=null && routeData!=null){
                 InsertAllRouteData(stNode,endNode,routeData);
@@ -467,7 +445,7 @@ import static java.lang.Math.sin;
         @Override
         public void onClick(View v) {
             if(v==change_map_options){
-        /*
+
             PopupMenu popup = new PopupMenu(getContext(), change_map_options);
             //Inflating the Popup using xml file
             popup.getMenuInflater()
@@ -505,9 +483,32 @@ import static java.lang.Math.sin;
                 }
             });
             popup.show();
-             */
+            }else if(v==re_center){
+                mMap.setMyLocationEnabled(true);
+                Location location = mMap.getMyLocation();
+                LatLng myLocation=null;
+                if (location != null) {
+                    myLocation = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                }
+                int height=0;
+                if(getView()!=null ) {
+                    height = getView().getMeasuredHeight();
+                }
+                Projection p = mMap.getProjection();
+                Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
+                Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
+                Point offset = new Point(center.x, (center.y + (height / 4)));
+                LatLng centerLoc = p.fromScreenLocation(center);
+                LatLng offsetNewLoc = p.fromScreenLocation(offset);
+                double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
+                LatLng shadowTgt = SphericalUtil.computeOffset(myLocation, offsetDistance, location.getBearing());
+                CameraPosition currentPlace = new CameraPosition.Builder()
+                        .target(shadowTgt)
+                        .bearing(location.getBearing()).tilt(65.5f).zoom(18)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 1000, null);
             }
-
         }
 
         public int startNavigation() {
@@ -534,7 +535,7 @@ import static java.lang.Math.sin;
                                     }
                                 }
 
-                            }, 0, 5000);
+                            }, 0, 15000);
                         }
                         mMap.setMyLocationEnabled(true);
                         mMap.setBuildingsEnabled(true);
@@ -613,8 +614,9 @@ import static java.lang.Math.sin;
                                                             double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
                                                             LatLng shadowTgt = SphericalUtil.computeOffset(nPosition, offsetDistance, bearing);
                                                             caclulateETA(TotalDistanceInMTS, SourceNode, currentGpsPosition, DestinationNode);
-                                                            verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, 40, null);
-
+                                                            //
+                                                            verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, MapEvents.routeDeviationDistance, null);
+                                                          //
                                                             AlertDestination(currentGpsPosition);
                                                             if (bearing > 0.0) {
                                                                 CameraPosition currentPlace = new CameraPosition.Builder()
@@ -625,6 +627,7 @@ import static java.lang.Math.sin;
                                                             } else {
 
                                                             }
+
 
                                                         }else if(islocationControlEnabled==true){
 
@@ -965,37 +968,98 @@ import static java.lang.Math.sin;
         }
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
         public void verifyRouteDeviation(final LatLng PrevousGpsPosition, final LatLng currentGpsPosition, final LatLng DestinationPosition, int markDistance, final List<LatLng>EdgeWithoutDuplicates) {
-
-            // Log.e("Route Deviation", "CURRENT GPS ----" + currentGpsPosition);
-            // Log.e("Route Deviation", " OLD GPS POSITION  ----" + PrevousGpsPosition);
+             Log.e("Route Deviation", "CURRENT GPS ----" + currentGpsPosition);
+             Log.e("Route Deviation", " OLD GPS POSITION  ----" + PrevousGpsPosition);
 
             if (PrevousGpsPosition != null){
                 double returnedDistance = showDistance(currentGpsPosition, PrevousGpsPosition);
                 // Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+returnedDistance);
                 float rotateBearing= (float) bearingBetweenLocations(PrevousGpsPosition,currentGpsPosition);
-                //   Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
-                if(returnedDistance > markDistance) {
-                    drawMarkerWithCircle(PrevousGpsPosition, 10);
+                 //  Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
+
+                  //  if(returnedDistance > markDistance) {
+                    drawMarkerWithCircle(PrevousGpsPosition, markDistance);
                     double distanceAtRouteDeviation = distFrom(currentGpsPosition.latitude, currentGpsPosition.longitude, mCircle.getCenter().latitude, mCircle.getCenter().longitude);
-                    // Log.e("LAST DISTANCE"," LAST DISTANCE @@@@@@@@@@@@@@@@@@@@ "+ distanceAtRouteDeviation);
+                    Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+  distanceAtRouteDeviation);
+                    Log.e("Route Deviation","CIRCLE RADIUS----"+  mCircle.getRadius());
+
                     if(distanceAtRouteDeviation> mCircle.getRadius()){
                         String cgpsLat = String.valueOf(currentGpsPosition.latitude);
                         String cgpsLongi = String.valueOf(currentGpsPosition.longitude);
                         final String routeDiationPosition = cgpsLongi.concat(" ").concat(cgpsLat);
+                        Log.e("Route Deviation","routeDiationPosition   ######"+ routeDiationPosition);
 
                         String destLatPos = String.valueOf(DestinationPosition.latitude);
                         String destLongiPos = String.valueOf(DestinationPosition.longitude);
                         final String destPoint = destLongiPos.concat(" ").concat(destLatPos);
                         RouteDeviatedSourcePosition = new LatLng(Double.parseDouble(cgpsLat), Double.parseDouble(cgpsLat));
-
-                        //  Log.e("returnedDistance", "RouteDiationPosition --------- " + routeDiationPosition);
+                        Log.e("Route Deviation","routeDiation SOURCE Position  ###### "+ RouteDeviatedSourcePosition);
+                        Log.e("returnedDistance", "RouteDiationPosition  ###### " + routeDiationPosition);
                         //   Log.e("returnedDistance", "Destination Position --------- " + destPoint);
                         //  DestinationPosition = new LatLng(destLat, destLng);
-                        //   dialog = new ProgressDialog(getActivity(), R.style.ProgressDialog);
-                        //   dialog.setMessage("Fetching new Route");
-                        //   dialog.setMax(100);
-                        //   dialog.show();
-                        //new Handler().postDelayed(new Runnable() {
+                          dialog = new ProgressDialog(getActivity(), R.style.ProgressDialog);
+                          dialog.setMessage("Fetching new Route");
+                          dialog.setMax(100);
+                          dialog.show();
+                          handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    dialog.dismiss();
+                                    String MESSAGE = "";
+                                    GetRouteDetails(routeDiationPosition, destPoint);
+                                    //checkPointsOfRoue1withNewRoute(EdgeWithoutDuplicates,PointBeforeRouteDeviation);
+                                    if (RouteDeviationConvertedPoints != null && RouteDeviationConvertedPoints.size() > 0) {
+                                        isRouteDeviated = true;
+
+                                        LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                                        @SuppressLint("WrongViewCast") View layout = inflater1.inflate(R.layout.custom_toast, (ViewGroup) getActivity().findViewById(R.id.textView_toast));
+                                        TextView text = (TextView) layout.findViewById(R.id.textView_toast);
+
+                                        text.setText("Route Deviated");
+
+                                        Toast toast = new Toast(getActivity().getApplicationContext());
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
+                                        toast.setGravity(Gravity.TOP, 0, 150);
+                                        toast.setView(layout);
+                                        toast.show();
+                                        StringBuilder routeDeviatedAlert = new StringBuilder();
+                                        routeDeviatedAlert.append("ROUTE DEVIATED" + "RouteDeviatedSourcePosition : " + RouteDeviatedSourcePosition);
+                                        sendData(MapEvents.ALERTVALUE_3, MapEvents.ALERTTYPE_3);
+                                        if (mPositionMarker != null) {
+                                            mPositionMarker.remove();
+                                            Log.e("REMOVING MARKER", "REMOVING MARKER");
+                                        }
+                                        mPositionMarker = mMap.addMarker(new MarkerOptions()
+                                                .position(currentGpsPosition)
+                                                .title("currentLocation")
+                                                .anchor(0.5f, 0.5f)
+                                                .flat(true)
+                                                .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent)));
+
+
+                                        CameraUpdate center =
+                                                CameraUpdateFactory.newLatLng(currentGpsPosition);
+                                        CameraUpdate zoom = CameraUpdateFactory.zoomTo(22);
+                                        mMap.moveCamera(center);
+                                        mMap.animateCamera(zoom);
+                                        if (mPositionMarker != null && mPositionMarker.isVisible() == true) {
+                                            PolylineOptions polylineOptions = new PolylineOptions();
+                                            polylineOptions.add(OldGPSPosition);
+                                            polylineOptions.addAll(RouteDeviationConvertedPoints);
+                                            Polyline polyline = mMap.addPolyline(polylineOptions);
+                                            polylineOptions.color(Color.RED).width(30);
+                                            mMap.addPolyline(polylineOptions);
+                                            polyline.setJointType(JointType.ROUND);
+                                        }
+                                    }
+                                    handler.postDelayed(this, 10);
+                                }
+                          }, 10);
+
+
+
+                        //   new Handler().postDelayed(new Runnable() {
+                        /*
                         new Runnable() {
                             @Override
                             public void run() {
@@ -1052,8 +1116,10 @@ import static java.lang.Math.sin;
 
                             }
                         };
+
+                         */
                     }
-                }
+              //  }
 
             }else{
 
@@ -2379,134 +2445,3 @@ import static java.lang.Math.sin;
         }
 
  }
-
-
-    /*
-      /*
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-
-
-                          mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-                              @Override
-                              public void onMyLocationChange(final Location location) {
-                                  if (currentGpsPosition != null) {
-                                      OldGPSPosition = currentGpsPosition;
-                                  }
-                                  Runnable runnable = new Runnable() {
-                                      public void run() {
-                                          currentGpsPosition = new LatLng(location.getLatitude(), location.getLongitude());
-                                          Log.e("CurrentGpsPoint", " currentGpsPosition GpsPoint " + currentGpsPosition);
-                                          vehicleSpeed = location.getSpeed();
-                                          LatLng OldNearestPosition = null;
-                                          if (isRouteDeviated == false) {
-                                              if (OldGPSPosition != null) {
-                                                  double distance = distFrom(OldGPSPosition.latitude, OldGPSPosition.longitude, currentGpsPosition.latitude, currentGpsPosition.longitude);
-                                                  Log.e("distance", "distance" + distance);
-                                                  if (distance > 10) {
-
-                                                  } else {
-                                                      OldNearestPosition = nPosition;
-                                                      Log.e("CurrentGpsPoint", " OLD Nearest GpsPoint " + OldNearestPosition);
-                                                      nPosition = GetNearestPointOnRoadFromGPS(OldGPSPosition, currentGpsPosition);
-                                                      Log.e("CurrentGpsPoint", " Nearest GpsPoint" + nPosition);
-                                                      if (mPositionMarker == null) {
-                                                          mPositionMarker = mMap.addMarker(new MarkerOptions()
-                                                                  .position(SourceNode)
-                                                                  .title("Nearest GpsPoint")
-                                                                  .anchor(0.5f, 0.5f)
-                                                                  .flat(true)
-                                                                  .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent_98)));
-                                                      } else {
-                                                          Log.e("CurrentGpsPoint", " currentGpsPosition ------ " + currentGpsPosition);
-                                                          if (OldNearestPosition != null) {
-                                                              animateCarMove(mPositionMarker, OldNearestPosition, nPosition, 1500);
-                                                              float bearing = (float) bearingBetweenLocations(OldNearestPosition, nPosition);
-                                                              Log.e("BEARING", "BEARING @@@@@@@ " + bearing);
-                                                              int height = getView().getMeasuredHeight();
-                                                              Projection p = mMap.getProjection();
-                                                              Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
-                                                              Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
-                                                              Point offset = new Point(center.x, (center.y + (height / 4)));
-                                                              LatLng centerLoc = p.fromScreenLocation(center);
-                                                              LatLng offsetNewLoc = p.fromScreenLocation(offset);
-                                                              double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
-                                                              LatLng shadowTgt = SphericalUtil.computeOffset(nPosition, offsetDistance, bearing);
-                                                              caclulateETA(TotalDistanceInMTS, SourceNode, currentGpsPosition, DestinationNode);
-                                                              verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, 40, null);
-
-                                                              AlertDestination(currentGpsPosition);
-                                                              if (bearing > 0.0) {
-                                                                  CameraPosition currentPlace = new CameraPosition.Builder()
-                                                                          .target(shadowTgt)
-                                                                          .bearing(bearing).tilt(65.5f).zoom(18)
-                                                                          .build();
-                                                                  mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 1000, null);
-                                                              } else {
-
-                                                              }
-
-                                                          }
-                                                      }
-
-                                                  }
-                                              }
-
-                                          } else {
-                                              MoveWithGpsPointInRouteDeviatedPoints(currentGpsPosition);
-                                          }
-                                      }
-
-                                  };
-
-                                  Handler handler1 = new Handler();
-                                  handler1.postDelayed(runnable, 0);
-                              }
-
-                          });
-
-                      }
-                       */
-
-/*
-  private void turnGpsOn(Context context) {
-        String beforeEnable = Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        String newSet = String.format("%s,%s",
-                beforeEnable,
-                LocationManager.GPS_PROVIDER);
-        try {
-            Settings.Secure.putString(context.getContentResolver(),
-                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
-                    newSet);
-        } catch (Exception e) {
-        }
-    }
-
-    public void turnGPSOn() {
-
-        Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-        intent.putExtra("enabled", true);
-        this.getContext().sendBroadcast(intent);
-
-        String provider = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (!provider.contains("gps")) { //if gps is disabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            this.getContext().sendBroadcast(poke);
-        }
-    }
-
-    // automatic turn off the gps
-    public void turnGPSOff() {
-        String provider = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (provider.contains("gps")) { //if gps is enabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            this.getContext().sendBroadcast(poke);
-        }
-    }
- */
