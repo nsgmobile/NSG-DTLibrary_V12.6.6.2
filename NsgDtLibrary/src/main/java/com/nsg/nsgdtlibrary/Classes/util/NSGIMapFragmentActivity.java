@@ -1149,11 +1149,12 @@ import static java.lang.Math.sin;
                  Log.e("Route Deviation", " FirstCordinate From Route deviation " + FirstCordinate);
                  Log.e("Route Deviation", " Second Cordinate From Route deviation " + SecondCordinate);
 
-
+                 OldGps =nearestPositionPoint;
                  nearestPositionPoint = findNearestPoint(currentGpsPosition, FirstCordinate, SecondCordinate);
                  Log.e("Route Deviation", " NEAREST POSITION From Route deviation " + nearestPositionPoint);
                  OldNearestGpsList.add(nearestPositionPoint);
              }
+             /*
              if (OldNearestGpsList.isEmpty() && OldNearestGpsList.size() == 0) {
                  OldGps = OldNearestGpsList.get(0);
                  int indexVal = OldNearestGpsList.indexOf(nearestPositionPoint);
@@ -1163,12 +1164,12 @@ import static java.lang.Math.sin;
                  OldGps = OldNearestGpsList.get(indexVal - 1);
                  nayaGps = OldNearestGpsList.get(indexVal);
              }
+
+              */
             // nearestValuesMap.put(String.valueOf(nearestPositionPoint), geometryDirectionText);
             // Log.e("Route Deviation", " OldGps POSITION From Route deviation " + nearestValuesMap.get());
              nearestPointValuesList.add(nearestPositionPoint);
-             if (currentGpsPosition.equals(DestinationNode)) {
-                 nearestPointValuesList.add(DestinationPosition);
-             }
+
              Log.e("Route Deviation", " OldGps POSITION From Route deviation " + OldGps);
              float bearing = (float) bearingBetweenLocations(OldGps, nayaGps); //correct method to change orientation of map
              if(mPositionMarker==null) {
@@ -1179,13 +1180,18 @@ import static java.lang.Math.sin;
                          .rotation(bearing)
                          .flat(true));
              }else {
-
+                 if(OldGps!=null && nearestPositionPoint!=null){
+                     animateCarMove(mPositionMarker, OldGps, nearestPositionPoint, 1000);
+                 }
+                    /*
                  //  .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent)));
                  if (OldGps.equals(nearestPositionPoint)) {
 
                  } else {
                      animateCarMove(mPositionMarker, OldGps, nearestPositionPoint, 1000);
                  }
+
+                     */
              }
              //  animateCamera(nearestPositionPoint, bearing);
              Projection p = mMap.getProjection();
@@ -1202,7 +1208,9 @@ import static java.lang.Math.sin;
                      .bearing(bearing).tilt(65.5f).zoom(20)
                      .build();
              mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 10000, null);
-
+             if (currentGpsPosition.equals(DestinationNode)) {
+                 nearestPointValuesList.add(DestinationPosition);
+             }
              AlertDestination(currentGpsPosition);
          }
 
