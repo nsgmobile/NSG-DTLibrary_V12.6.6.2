@@ -256,11 +256,11 @@ import static java.lang.Math.sin;
             NSGIMapFragmentActivity.this.BASE_MAP_URL_FORMAT = BASE_MAP_URL_FORMAT;
         }
         @SuppressLint("ValidFragment")
-        public NSGIMapFragmentActivity(String BASE_MAP_URL_FORMAT,String stNode,String endNode, String routeData,String routeDeviatedDT_URL,String AuthorisationKey) {
+        public NSGIMapFragmentActivity(String BASE_MAP_URL_FORMAT,String stNode,String endNode, String routeData,int routeDeviationBuffer,String routeDeviatedDT_URL,String AuthorisationKey) {
             NSGIMapFragmentActivity.this.BASE_MAP_URL_FORMAT = BASE_MAP_URL_FORMAT;
             NSGIMapFragmentActivity.this.stNode=stNode;
             NSGIMapFragmentActivity.this.endNode=endNode;
-            // NSGIMapFragmentActivity.this.routeDeviationDistance=radius;
+            NSGIMapFragmentActivity.this.routeDeviationDistance=routeDeviationBuffer;
             NSGIMapFragmentActivity.this.routeData=routeData;
             NSGIMapFragmentActivity.this.routeDeviatedDT_URL=routeDeviatedDT_URL;
             NSGIMapFragmentActivity.this.AuthorisationKey=AuthorisationKey;
@@ -626,7 +626,7 @@ import static java.lang.Math.sin;
                                                             double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
                                                             LatLng shadowTgt = SphericalUtil.computeOffset(nPosition, offsetDistance, bearing);
                                                             caclulateETA(TotalDistanceInMTS, SourceNode, currentGpsPosition, DestinationNode);
-                                                            verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode, MapEvents.routeDeviationDistance, null);
+                                                            verifyRouteDeviation(OldGPSPosition, currentGpsPosition, DestinationNode,routeDeviationDistance, null);
                                                             AlertDestination(currentGpsPosition);
                                                             if (bearing > 0.0) {
                                                                 CameraPosition currentPlace = new CameraPosition.Builder()
