@@ -508,7 +508,6 @@ import static java.lang.Math.sin;
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 1000, null);
             }
         }
-
         public int startNavigation() {
             /*
                 Starts Navigation HERE
@@ -519,7 +518,6 @@ import static java.lang.Math.sin;
             islocationControlEnabled=false;
             Log.v("APP DATA ", "islocationControlEnabled START BUTTON GPS POSITION ----" + OldGPSPosition);
             if (SourceNode != null && DestinationNode != null ) {
-
                 nearestPointValuesList = new ArrayList<LatLng>();
                 nearestPointValuesList.add(new LatLng(sourceLat, sourceLng));
                 OldNearestGpsList = new ArrayList<>();
@@ -601,7 +599,6 @@ import static java.lang.Math.sin;
                                                             if(getView()!=null ) {
                                                              height = getView().getMeasuredHeight();
                                                             }
-
                                                             Projection p = mMap.getProjection();
                                                             Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
                                                             Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
