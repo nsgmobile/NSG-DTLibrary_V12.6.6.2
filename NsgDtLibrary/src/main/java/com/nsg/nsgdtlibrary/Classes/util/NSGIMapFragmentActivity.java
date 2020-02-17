@@ -1066,7 +1066,7 @@ import static java.lang.Math.sin;
                                             .title("currentLocation")
                                             .anchor(0.5f, 0.5f)
                                             .flat(true)
-                                            .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent)));
+                                            .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent_98)));
 
 
                                     CameraUpdate center =
@@ -1106,6 +1106,7 @@ import static java.lang.Math.sin;
              for (int k = 0; k < EdgeWithoutDuplicatesInRouteDeviationPoints.size(); k++) {
                  //Log.e("Route Deviated----", "EdgeWithoutDuplicatesInRouteDeviationPoints ------- " + EdgeWithoutDuplicatesInRouteDeviationPoints.get(k));
              }
+
              if (EdgeWithoutDuplicatesInRouteDeviationPoints != null && EdgeWithoutDuplicatesInRouteDeviationPoints.size() > 0) {
 
                  List distancesInDeviation = new ArrayList();
@@ -1157,20 +1158,6 @@ import static java.lang.Math.sin;
              }
              Log.e("Route Deviation", " OldGps POSITION From Route deviation " + OldGpsRouteDeviation);
              Log.e("Route Deviation", " NEAREST POSITION From Route deviation " + nearestPositionPoint);
-             /*
-             if (OldNearestGpsList.isEmpty() && OldNearestGpsList.size() == 0) {
-                 OldGps = OldNearestGpsList.get(0);
-                 int indexVal = OldNearestGpsList.indexOf(nearestPositionPoint);
-                 nayaGps = OldNearestGpsList.get(indexVal);
-             } else {
-                 int indexVal = OldNearestGpsList.indexOf(nearestPositionPoint);
-                 OldGps = OldNearestGpsList.get(indexVal - 1);
-                 nayaGps = OldNearestGpsList.get(indexVal);
-             }
-
-              */
-             // nearestValuesMap.put(String.valueOf(nearestPositionPoint), geometryDirectionText);
-             // Log.e("Route Deviation", " OldGps POSITION From Route deviation " + nearestValuesMap.get());
              nearestPointValuesList.add(nearestPositionPoint);
 
              Log.e("Route Deviation", " OldGps POSITION From Route deviation " + OldGpsRouteDeviation);
@@ -1187,37 +1174,29 @@ import static java.lang.Math.sin;
                  } else {
 
                      animateCarMove(mPositionMarker, OldGpsRouteDeviation , nearestPositionPoint, 1000);
+                     Projection p = mMap.getProjection();
+                     Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
+                     Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
+                     Point offset = new Point(center.x, (center.y + 300));
+                     LatLng centerLoc = p.fromScreenLocation(center);
+                     LatLng offsetNewLoc = p.fromScreenLocation(offset);
+                     double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
+                     LatLng shadowTgt = SphericalUtil.computeOffset(nearestPositionPoint, offsetDistance, bearing);
+
+                     CameraPosition currentPlace = new CameraPosition.Builder()
+                             .target(shadowTgt)
+                             .bearing(bearing).tilt(65.5f).zoom(20)
+                             .build();
+                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 10000, null);
                  }
-                    /*
-                 //  .icon(bitmapDescriptorFromVector(getContext(), R.drawable.gps_transperent)));
-                 if (OldGps.equals(nearestPositionPoint)) {
 
-                 } else {
-                     animateCarMove(mPositionMarker, OldGps, nearestPositionPoint, 1000);
-                 }
-
-                     */
-
-
-                 //  animateCamera(nearestPositionPoint, bearing);
-                 Projection p = mMap.getProjection();
-                 Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
-                 Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
-                 Point offset = new Point(center.x, (center.y + 300));
-                 LatLng centerLoc = p.fromScreenLocation(center);
-                 LatLng offsetNewLoc = p.fromScreenLocation(offset);
-                 double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
-                 LatLng shadowTgt = SphericalUtil.computeOffset(nearestPositionPoint, offsetDistance, bearing);
-
-                 CameraPosition currentPlace = new CameraPosition.Builder()
-                         .target(shadowTgt)
-                         .bearing(bearing).tilt(65.5f).zoom(20)
-                         .build();
-                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 10000, null);
              }
+             /*
              if (currentGpsPosition.equals(DestinationNode)) {
                  nearestPointValuesList.add(DestinationPosition);
              }
+
+              */
              AlertDestination(currentGpsPosition);
          }
      }
