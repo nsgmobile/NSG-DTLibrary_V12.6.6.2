@@ -290,10 +290,14 @@ import static java.lang.Math.sin;
                     }
                 });
             }
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
+            //Initialise Fused Location Client
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            //Initialise Location Listener
             locationRequest = LocationRequest.create();
+            //Initialise Accuracy
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            //Initialise interval
             locationRequest.setInterval(10 * 1000); // 10 seconds
             // locationRequest.setFastestInterval(5 * 1000); // 5 seconds
 
@@ -304,7 +308,7 @@ import static java.lang.Math.sin;
                     isGPS = isGPSEnable;
                 }
             });
-
+            //getLocation callback Method for get location
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
@@ -325,29 +329,12 @@ import static java.lang.Math.sin;
                                 stringBuilder.append("-");
                                 stringBuilder.append(wayLongitude);
                                 stringBuilder.append("\n\n");
-                                // txtContinueLocation.setText(stringBuilder.toString());
-                                // Log.v("APP DATA", "location DATA ........ELSE  " );
                                 currentGPSPosition = new LatLng(wayLatitude, wayLongitude);
-                                // Log.v("APP DATA", "currentGPSPosition DATA ........ELSE  "+currentGPSPosition );
-
-                                //  s1= String.valueOf(wayLatitude);
-                                //  s2= String.valueOf(wayLongitude);
-                                //  Log.v("APP DATA","lat"+s1+"long"+s2);
                             }
-                            // }else{
-
-                            // }
-
                         }
                     }
-                    //   }else{
-
-                    //   }
                 }
             };
-
-
-
         }
         @Override
         public void onAttach(Context context) {
@@ -364,24 +351,28 @@ import static java.lang.Math.sin;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            //Check self permissions for Location and storage
             checkPermission();
+            //Request permissions for Location and storage
             requestPermission();
+            //set marker icon
             mMarkerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.gps_transperent_98);
+            //Initialise RootView
             View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+            //Initialise Buttons
             re_center=(ImageButton)rootView.findViewById(R.id.re_center);
             re_center.setOnClickListener(NSGIMapFragmentActivity.this);
-
-            String delQuery = "DELETE  FROM " + RouteT.TABLE_NAME;
-            sqlHandler.executeQuery(delQuery);
             change_map_options = (ImageButton)rootView.findViewById(R.id.change_map_options);
             change_map_options.setOnClickListener(NSGIMapFragmentActivity.this);
-
+            // Delete Contents fron ROUTE_T On initialisation of Route view
+            String delQuery = "DELETE  FROM " + RouteT.TABLE_NAME;
+            sqlHandler.executeQuery(delQuery);
+           /* Insert NewDatata According to  SourceNode,DestinationNode,RouteData To local Database Coloumns*/
             if(stNode!=null && endNode!=null && routeData!=null){
                 InsertAllRouteData(stNode,endNode,routeData);
                 getRouteAccordingToRouteID(stNode,endNode);
                 if(RouteDataList!=null && RouteDataList.size()>0) {
                     route = RouteDataList.get(0);
-
                     String routeDataFrmLocalDB = route.getRouteData();
                     String sourceText=route.getStartNode();
                     String[]  text =sourceText.split(" ");
@@ -395,42 +386,43 @@ import static java.lang.Math.sin;
                     DestinationNode=new LatLng(destLat,destLng);
                 }
             }
-
+            //Initialise Map fragment
             SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment1 = activity   SupportMapFragment = fragment
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googlemap) {
                     if (BASE_MAP_URL_FORMAT != null) {
-
+                        //Initialise GoogleMap
                         NSGIMapFragmentActivity.this.mMap = googlemap;
-                      //  mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                        //mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                        //set GoogleMap Style
                         NSGIMapFragmentActivity.this.mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.stle_map_json));
+                        //set  Tileprovider to GoogleMap
                         TileProvider tileProvider = new ExpandedMBTilesTileProvider(new File(BASE_MAP_URL_FORMAT.toString()), 256, 256);
                         TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
                         tileOverlay.setTransparency(0.5f - tileOverlay.getTransparency());
                         tileOverlay.setVisible(true);
                         if (routeData != null) {
+                            /*Get Route From Database and plot on map*/
                             GetRouteFromDBPlotOnMap(routeData);
                             StringBuilder routeAlert = new StringBuilder();
                             routeAlert.append(MapEvents.ALERTVALUE_1).append("SourcePosition : " + SourceNode).append("Destination Node " + DestinationNode);
+                            //send alert AlertTupe-1 -- started
                             sendData(routeAlert.toString(), MapEvents.ALERTTYPE_1);
                         }
+                        //get all edges data from local DB
                         getAllEdgesData();
+                        //Adding markers on map
                         addMarkers();
+                       // get Valid Routedata acc to Map
                         getValidRouteData();
                         if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             // TODO: Consider calling
                             //    ActivityCompat#requestPermissions
                             return;
                         }
+                        //Sending Alert Map is READY
                         isMapLoaded = true;
-
-                        //  isContinue = true;
-                        //  stringBuilder = new StringBuilder();
-                        //  currentGPSPosition=getLocation();
-                        //  Log.d("TAG", "location DATA  FROM MAIN VIEW........"+"CURRENT GPS POSITION : "+ currentGPSPosition );
-
-
                         if(isMapLoaded==true ){
                             String MapAlert="Map is Ready";
                             sendData(MapEvents.ALERTVALUE_6,MapEvents.ALERTTYPE_6);
@@ -445,7 +437,7 @@ import static java.lang.Math.sin;
         public void onClick(View v) {
             if(v==change_map_options){
                 /*
-                Changing Map options on button click
+                Changing Map options on button click To MAP_TYPE_NORMAL,MAP_TYPE_SATELLITE,MAP_TYPE_TERRAIN,MAP_TYPE_HYBRID
                  */
 
             PopupMenu popup = new PopupMenu(getContext(), change_map_options);
