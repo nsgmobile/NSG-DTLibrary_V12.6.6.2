@@ -141,10 +141,9 @@ public class NSGApiActivity extends FragmentActivity implements NSGIMapFragmentA
             builder.setIcon(R.drawable.car_icon_32);
             builder.setMessage("Destination Reached")
                     .setCancelable(false)
-                    .setPositiveButton(" Finish ", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("STOP", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
-
+                          //  you have to close the activity here  otherwise location will not stop and it leads to moving towards source position on "STOP" button
                         }
                     });
             AlertDialog alert = builder.create();
