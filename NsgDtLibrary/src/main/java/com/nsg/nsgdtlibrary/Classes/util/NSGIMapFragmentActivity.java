@@ -989,39 +989,25 @@ import static java.lang.Math.sin;
              Log.e("Route Deviation", " OLD GPS POSITION  ----" + PrevousGpsPosition);
 
             if (PrevousGpsPosition != null){
-                double returnedDistance = showDistance(currentGpsPosition, PrevousGpsPosition);
-                // Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+returnedDistance);
-                float rotateBearing= (float) bearingBetweenLocations(PrevousGpsPosition,currentGpsPosition);
-                   Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
-                   LatLng deviatedPoint_nearest = GetNearestPointOnRoadFromGPS(PrevousGpsPosition,currentGpsPosition);
-                   Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ deviatedPoint_nearest);
-                   Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ edgeDataPointsList.size());
-                   boolean nearest_flag=false;
+                //double returnedDistance = showDistance(currentGpsPosition, PrevousGpsPosition);
+               //  Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+returnedDistance);
+               // float rotateBearing= (float) bearingBetweenLocations(PrevousGpsPosition,currentGpsPosition);
+                //   Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
 
-                   for(int k=0;k<edgeDataPointsList.size();k++){
-                       Log.e("--"," "+ edgeDataPointsList.get(k));
-
-
-                   }
-                    if (edgeDataPointsList.contains(deviatedPoint_nearest)) {
-                        nearest_flag=true;
-                        Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG"+ nearest_flag);
-                    }else{
-                        nearest_flag=false;
-                        Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG "+ nearest_flag);
-                    }
-
-
+                   //Here Previous GPS is Dummy  we not using   , we are sending it just for avaoiding parameter exception
+                  LatLng deviatedPoint_nearest = GetNearestPointOnRoadFromGPS(PrevousGpsPosition,currentGpsPosition);
+                  Log.e("Route Deviation","ROUTE DEVIATION  NEAREST  POINT "+ deviatedPoint_nearest);
+                  double returnedDistance = showDistance(currentGpsPosition, deviatedPoint_nearest);
+                  Log.e("Route Deviation","ROUTE DEVIATION  DISTANCE To Nearest "+ returnedDistance);
 
 
                   //  if(returnedDistance > markDistance) {
-                    drawMarkerWithCircle(PrevousGpsPosition, markDistance);
-                    double distanceAtRouteDeviation = distFrom(currentGpsPosition.latitude, currentGpsPosition.longitude, mCircle.getCenter().latitude, mCircle.getCenter().longitude);
-                    Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+  distanceAtRouteDeviation);
-                    Log.e("Route Deviation","CIRCLE RADIUS----"+  mCircle.getRadius());
-                    Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
+                  drawMarkerWithCircle(PrevousGpsPosition, markDistance);
+                  double distanceAtRouteDeviation = distFrom(currentGpsPosition.latitude, currentGpsPosition.longitude, mCircle.getCenter().latitude, mCircle.getCenter().longitude);
+                  Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+  distanceAtRouteDeviation);
+                  Log.e("Route Deviation","CIRCLE RADIUS----"+  mCircle.getRadius());
 
-                    if(distanceAtRouteDeviation> mCircle.getRadius() ){
+                  if(distanceAtRouteDeviation> mCircle.getRadius() && returnedDistance > 3 ){
                         String cgpsLat = String.valueOf(currentGpsPosition.latitude);
                         String cgpsLongi = String.valueOf(currentGpsPosition.longitude);
                         final String routeDiationPosition = cgpsLongi.concat(" ").concat(cgpsLat);
@@ -1104,7 +1090,7 @@ import static java.lang.Math.sin;
                             }
                         });
 
-                    }
+                  }
 
             }else{
 
