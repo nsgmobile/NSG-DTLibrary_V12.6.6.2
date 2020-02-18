@@ -485,28 +485,15 @@ import static java.lang.Math.sin;
                 recenter to  the position captured
                  */
                 mMap.setMyLocationEnabled(true);
+
+
                 Location location = mMap.getMyLocation();
                 LatLng myLocation=null;
                 if (location != null) {
                     myLocation = new LatLng(location.getLatitude(),
                             location.getLongitude());
-                    int height=0;
-                    if(getView()!=null ) {
-                        height = getView().getMeasuredHeight();
-                    }
-                    Projection p = mMap.getProjection();
-                    Point bottomRightPoint = p.toScreenLocation(p.getVisibleRegion().nearRight);
-                    Point center = new Point(bottomRightPoint.x / 2, bottomRightPoint.y / 2);
-                    Point offset = new Point(center.x, (center.y + (height / 4)));
-                    LatLng centerLoc = p.fromScreenLocation(center);
-                    LatLng offsetNewLoc = p.fromScreenLocation(offset);
-                    double offsetDistance = SphericalUtil.computeDistanceBetween(centerLoc, offsetNewLoc);
-                    LatLng shadowTgt = SphericalUtil.computeOffset(myLocation, offsetDistance, location.getBearing());
-                    CameraPosition currentPlace = new CameraPosition.Builder()
-                            .target(shadowTgt)
-                            .bearing(location.getBearing()).tilt(65.5f).zoom(18)
-                            .build();
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace), 1000, null);
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),16));
 
                 }else{
 
