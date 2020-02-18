@@ -1448,11 +1448,8 @@ import static java.lang.Math.sin;
                         if (speechStatus1 == TextToSpeech.ERROR) {
                             Log.e("TTS", "Error in converting Text to Speech!");
                         }
-                        StringBuilder destinationAlert = new StringBuilder("Destination Reached");
                         sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
                         mFusedLocationClient.removeLocationUpdates(locationCallback);
-
-                        Log.e("Alert Destination", " Alert Destination @@@@@@@@@@@@@@@@@@@@ " + DestinationNode);
                         try {
                             callback = null;
                             mFusedLocationClient=null;
