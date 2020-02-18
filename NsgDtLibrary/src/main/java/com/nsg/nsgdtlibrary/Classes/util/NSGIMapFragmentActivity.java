@@ -1469,9 +1469,9 @@ import static java.lang.Math.sin;
                         sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
                         mFusedLocationClient.removeLocationUpdates(locationCallback);
                         try {
-                            callback = null;
-                            mFusedLocationClient=null;
-                            locationCallback=null;
+                           // callback = null;
+                          //  mFusedLocationClient=null;
+                          //  locationCallback=null;
 
                         }catch(Exception e){
 
