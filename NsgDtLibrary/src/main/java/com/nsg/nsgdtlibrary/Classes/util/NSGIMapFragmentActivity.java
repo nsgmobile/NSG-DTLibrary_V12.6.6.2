@@ -1082,6 +1082,9 @@ import static java.lang.Math.sin;
         }
      @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
      public void MoveWithGpsPointInRouteDeviatedPoints(LatLng currentGpsPosition){
+            /*
+            Move in fakeGps points with
+             */
          LatLng FirstCordinate = null,SecondCordinate=null;
          LatLng  OldGpsRouteDeviation=null;
          if(RouteDeviationConvertedPoints!=null) {
@@ -1751,6 +1754,9 @@ import static java.lang.Math.sin;
         }
 
         private LatLng findNearestPoint(final LatLng p, final LatLng start, final LatLng end) {
+            /*
+            Finding Nearest Position
+             */
             if (start.equals(end)) {
                 return start;
             }
@@ -1777,6 +1783,9 @@ import static java.lang.Math.sin;
         }
 
         public void addMarkers(){
+            /*
+            if Source and destination are available Adding markers on map other wise add marker at dubai port area
+             */
             if(SourceNode!=null && DestinationNode!=null) {
                 sourceMarker = mMap.addMarker(new MarkerOptions()
                         .position(SourceNode)
@@ -1812,6 +1821,9 @@ import static java.lang.Math.sin;
             }
         }
         public void GetRouteFromDBPlotOnMap(String FeatureResponse){
+             /*
+               if Source and destination and Route data Available from the NSGIMapFragmentActivity it will done internal calculation from routeData of a particular route
+                            and plot route on map and save the route inside of Local Sqlite DB*/
             JSONObject jsonObject = null;
             try {
                 if(FeatureResponse!=null){
@@ -1932,6 +1944,7 @@ import static java.lang.Math.sin;
 
 
         private boolean checkPermission() {
+             /* Check Self permission for ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE */
             int result = ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION);
             int result1 = ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE);
 
@@ -1939,7 +1952,7 @@ import static java.lang.Math.sin;
         }
 
         private void requestPermission() {
-
+            /*  Request permission for ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE */
             ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
         }
@@ -1948,6 +1961,7 @@ import static java.lang.Math.sin;
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            /* onRequestPermissionsResult for ACCESS_FINE_LOCATION, READ_EXTERNAL_STORAGE */
             switch (requestCode) {
                 case PERMISSION_REQUEST_CODE: {
                     if (grantResults.length > 0) {
@@ -2057,19 +2071,9 @@ import static java.lang.Math.sin;
         */
 
         private LatLng getLocation() {
-            /*
-            if (ActivityCompat.checkSelfPermission(getContext(),
-            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(getContext(),
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-         requestPermissions(getActivity(),
-                new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_LOCATION);
-
-             */
-
-           // } else {
+          /*
+          Get Location from Fused location client Api
+           */
                 if (isContinue) {
                     // Log.v("APP DATA","checking IF ic continue "+isContinue);
                    if( mFusedLocationClient!=null && locationRequest!=null && locationCallback!=null) {
@@ -2101,7 +2105,7 @@ import static java.lang.Math.sin;
                         }
                     });
                 }
-          //  }
+
             return currentGPSPosition;
         }
         @Override
@@ -2114,6 +2118,9 @@ import static java.lang.Math.sin;
             }
         }
         private void animateCarMove(final Marker marker, final LatLng beginLatLng, final LatLng endLatLng, final long duration) {
+            /*
+            Move Cursor Position According to CGPS and Old marker Positions
+           */
             final Handler handler = new Handler();
             final long startTime = SystemClock.uptimeMillis();
             final Interpolator interpolator = new LinearInterpolator();
