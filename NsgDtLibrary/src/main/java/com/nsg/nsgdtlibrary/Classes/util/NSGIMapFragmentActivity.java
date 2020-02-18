@@ -993,7 +993,25 @@ import static java.lang.Math.sin;
                 // Log.e("Route Deviation","ROUTE DEVIATION DISTANCE ----"+returnedDistance);
                 float rotateBearing= (float) bearingBetweenLocations(PrevousGpsPosition,currentGpsPosition);
                    Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
-                    
+                   LatLng deviatedPoint_nearest = GetNearestPointOnRoadFromGPS(PrevousGpsPosition,currentGpsPosition);
+                   Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ deviatedPoint_nearest);
+                   Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ edgeDataPointsList.size());
+                   boolean nearest_flag=false;
+
+                   for(int k=0;k<edgeDataPointsList.size();k++){
+                       Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ edgeDataPointsList.get(k));
+                       if (edgeDataPointsList.contains(deviatedPoint_nearest)) {
+                          nearest_flag=true;
+                           Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG"+ nearest_flag);
+                       }else{
+                            nearest_flag=false;
+                           Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG "+ nearest_flag);
+                       }
+
+                   }
+
+
+
 
                   //  if(returnedDistance > markDistance) {
                     drawMarkerWithCircle(PrevousGpsPosition, markDistance);
@@ -1002,7 +1020,7 @@ import static java.lang.Math.sin;
                     Log.e("Route Deviation","CIRCLE RADIUS----"+  mCircle.getRadius());
                     Log.e("Route Deviation","ROUTE DEVIATION ANGLE ----"+ rotateBearing);
 
-                    if(distanceAtRouteDeviation> mCircle.getRadius() && rotateBearing!=180){
+                    if(distanceAtRouteDeviation> mCircle.getRadius() ){
                         String cgpsLat = String.valueOf(currentGpsPosition.latitude);
                         String cgpsLongi = String.valueOf(currentGpsPosition.longitude);
                         final String routeDiationPosition = cgpsLongi.concat(" ").concat(cgpsLat);
