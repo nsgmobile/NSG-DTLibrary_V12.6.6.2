@@ -1467,16 +1467,17 @@ import static java.lang.Math.sin;
                             Log.e("TTS", "Error in converting Text to Speech!");
                         }
                         sendData(MapEvents.ALERTVALUE_4, MapEvents.ALERTTYPE_4);
-                        mFusedLocationClient.removeLocationUpdates(locationCallback);
-                        try {
+                      //  if(mFusedLocationClient!-nu)
+                       // mFusedLocationClient.removeLocationUpdates(locationCallback);
+                       // try {
                            // callback = null;
                           //  mFusedLocationClient=null;
                           //  locationCallback=null;
 
-                        }catch(Exception e){
+                       // }catch(Exception e){
 
-                        }
-
+                      //  }
+                        //
                         /*
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.yourDialog);
                         builder.setTitle("Alert");
