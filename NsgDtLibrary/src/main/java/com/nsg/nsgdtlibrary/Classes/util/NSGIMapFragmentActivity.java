@@ -999,16 +999,17 @@ import static java.lang.Math.sin;
                    boolean nearest_flag=false;
 
                    for(int k=0;k<edgeDataPointsList.size();k++){
-                       Log.e("Route Deviation","ROUTE DEVIATION  NEAREST POSITION POINT "+ edgeDataPointsList.get(k));
-                       if (edgeDataPointsList.contains(deviatedPoint_nearest)) {
-                          nearest_flag=true;
-                           Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG"+ nearest_flag);
-                       }else{
-                            nearest_flag=false;
-                           Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG "+ nearest_flag);
-                       }
+                       Log.e("--"," "+ edgeDataPointsList.get(k));
+
 
                    }
+                    if (edgeDataPointsList.contains(deviatedPoint_nearest)) {
+                        nearest_flag=true;
+                        Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG"+ nearest_flag);
+                    }else{
+                        nearest_flag=false;
+                        Log.e("Route Deviation","ROUTE DEVIATION  NEAREST FLAG "+ nearest_flag);
+                    }
 
 
 
@@ -1836,13 +1837,15 @@ import static java.lang.Math.sin;
                 destinationMarker = mMap.addMarker(new MarkerOptions()
                         .position(DestinationNode)
                         .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.destination_marker_whitetext_lightgreen)));
-                CameraPosition googlePlex1 = CameraPosition.builder()
+
+              /*  CameraPosition googlePlex1 = CameraPosition.builder()
                         .target(DestinationNode)
                         .zoom(18)
                         .tilt(45)
                         .build();
 
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex1), 1000, null);
+                */
             }else{
                 //  mMap.addMarker(new MarkerOptions()
                 //         .position(new LatLng(24.984408, 55.072814))
