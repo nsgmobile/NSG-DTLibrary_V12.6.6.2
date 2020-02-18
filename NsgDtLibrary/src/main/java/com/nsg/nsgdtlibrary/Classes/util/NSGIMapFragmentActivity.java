@@ -24,6 +24,8 @@ import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -1021,8 +1023,15 @@ import static java.lang.Math.sin;
                             @Override
                             public void run() {
                                 String MESSAGE = "";
-                                GetRouteDetails(routeDiationPosition, destPoint);
+                                Boolean networkEnabled=isNetworkAvailable();
+                                if(networkEnabled==true) {
+                                    GetRouteDetails(routeDiationPosition, destPoint);
+                                }else{
+                                  //  Toast.makeText(getContext(),"Internet Not available",Toast.LENGTH_SHORT).show();
+                                }
                                 //checkPointsOfRoue1withNewRoute(EdgeWithoutDuplicates,PointBeforeRouteDeviation);
+
+
                                 if (RouteDeviationConvertedPoints != null && RouteDeviationConvertedPoints.size() > 0) {
                                     isRouteDeviated = true;
 
@@ -1080,6 +1089,12 @@ import static java.lang.Math.sin;
 
             }
         }
+     private boolean isNetworkAvailable() {
+         ConnectivityManager connectivityManager
+                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+     }
      @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
      public void MoveWithGpsPointInRouteDeviatedPoints(LatLng currentGpsPosition){
             /*
