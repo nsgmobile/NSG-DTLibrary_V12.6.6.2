@@ -22,6 +22,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import androidx.annotation.NonNull;
 
 import static android.content.ContentValues.TAG;
+/**
+ * Created by sailaja.ch NSGI on 5/10/2019 *
+ * Modified on 13/11/2019
+ *
+ */
 
 public class GpsUtils {
 

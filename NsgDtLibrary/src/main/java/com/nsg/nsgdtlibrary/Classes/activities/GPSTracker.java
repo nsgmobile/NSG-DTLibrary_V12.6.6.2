@@ -14,6 +14,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+/**
+ * Created by sailaja.ch NSGI on 5/10/2019 *
+ * Modified on 13/11/2019
+ *
+ */
 
 public class GPSTracker extends Service implements LocationListener {
     private final Context mContext;

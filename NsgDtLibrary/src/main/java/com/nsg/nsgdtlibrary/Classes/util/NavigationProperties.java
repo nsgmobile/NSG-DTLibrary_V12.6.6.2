@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class NavigationProperties implements Parcelable {
+public class NavigationProperties  {
 
     private String baseMap_Url_format;
     private String SourcePosition;
@@ -92,13 +92,4 @@ public class NavigationProperties implements Parcelable {
         Authorisation_key = authorisation_key;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

@@ -145,6 +145,11 @@ import static androidx.core.content.PermissionChecker.checkSelfPermission;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+/**
+ * Created by sailaja.ch NSGI on 5/8/2019 *
+ * Modified on 13/11/2019
+ *
+ */
 
 public class NSGTiledLayerOnMap extends Fragment implements View.OnClickListener {
     private static final int PERMISSION_REQUEST_CODE = 200;
