@@ -489,6 +489,7 @@ import static java.lang.Math.sin;
                 Recenter Button if map enabled and location enabled get location from map and update map position and
                 recenter to  the position captured
                  */
+                /*
                 mMap.setMyLocationEnabled(true);
 
 
@@ -503,6 +504,8 @@ import static java.lang.Math.sin;
                 }else{
 
                 }
+
+                 */
 
             }
         }
@@ -1013,10 +1016,7 @@ import static java.lang.Math.sin;
                         Log.e("returnedDistance", "RouteDiationPosition  ###### " + routeDiationPosition);
                         //   Log.e("returnedDistance", "Destination Position --------- " + destPoint);
                         //  DestinationPosition = new LatLng(destLat, destLng);
-                        dialog = new ProgressDialog(getActivity(), R.style.ProgressDialog);
-                        dialog.setMessage("Fetching new Route");
-                        dialog.setMax(100);
-                        dialog.show();
+
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -1220,6 +1220,10 @@ import static java.lang.Math.sin;
                     @Override
                     public void run() {
                         if (Build.VERSION.SDK_INT > 9) {
+                           // dialog = new ProgressDialog(getActivity(), R.style.ProgressDialog);
+                           // dialog.setMessage("Fetching new Route");
+                          //  dialog.setMax(100);
+                          //  dialog.show();
                             StrictMode.ThreadPolicy policy =
                                     new StrictMode.ThreadPolicy.Builder().permitAll().build();
                             StrictMode.setThreadPolicy(policy);
@@ -1316,14 +1320,14 @@ import static java.lang.Math.sin;
                             }catch (Exception ex){
 
                             }
-                            dialog.dismiss();
+                          //  dialog.dismiss();
                         }
                     }
                 });
             }catch(Exception e){
                 e.printStackTrace();
             }
-            dialog.dismiss();
+           // dialog.dismiss();
         }
         private String HttpPost(String myUrl,String latLng1,String latLng2) throws IOException, JSONException {
             StringBuilder sb = new StringBuilder();
